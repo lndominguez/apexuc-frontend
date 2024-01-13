@@ -3,7 +3,7 @@
   "author": "Minimals",
   "version": "5.7.0",
   "description": "Vite & JavaScript",
-  "private": true,
+  "homepage": ".",
   "type": "module",
   "scripts": {
     "dev": "vite",
