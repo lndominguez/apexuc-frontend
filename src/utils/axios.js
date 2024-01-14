@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { HOST_API } from 'src/config-global';
+import { HOST_API, APEXUC_API } from 'src/config-global';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: HOST_API });
+const axiosInstance = axios.create({ baseURL: APEXUC_API });
 
 axiosInstance.interceptors.response.use(
   (res) => res,
