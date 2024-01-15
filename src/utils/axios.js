@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { HOST_API, APEXUC_API } from 'src/config-global';
+import { APEXUC_API } from 'src/config-global';
 
 // ----------------------------------------------------------------------
 
