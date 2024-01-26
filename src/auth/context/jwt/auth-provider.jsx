@@ -61,15 +61,15 @@ export function AuthProvider({ children }) {
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
-        const response = await axios.get(endpoints.auth.me);
+        // const response = await axios.get(endpoints.auth.me);
 
-        const { user } = response.data;
+        // const { user } = response.data;
 
         dispatch({
           type: 'INITIAL',
           payload: {
             user: {
-              ...user,
+              // ...user,
               accessToken,
             },
           },
@@ -83,7 +83,6 @@ export function AuthProvider({ children }) {
         });
       }
     } catch (error) {
-      console.error(error);
       dispatch({
         type: 'INITIAL',
         payload: {
@@ -97,21 +96,60 @@ export function AuthProvider({ children }) {
     initialize();
   }, [initialize]);
 
-  // LOGIN
+  // LOGIN JWT
   const login = useCallback(async (email, password) => {
     const data = {
       email,
       password,
     };
 
-    const response = await axios.post(endpoints.auth.login, data);
+    await axios.post(endpoints.auth.login, data,{
+      headers:{"Content-Type":"application/json"}
+    }).then(response =>{
+      const { accessToken, user } = response.data;
+      setSession(accessToken);
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          user: {
+            ...user,
+            accessToken,
+          },
+        },
+      });
+    }).catch(err => console.error(err));
+  }, []);
 
+  // LOGIN WITH GOOGLE
+  const googleLogin = useCallback(async (googleAccessToken) => {
+    const data = {googleAccessToken};
+    const response = await axios.post(endpoints.auth.login, data);
     const { accessToken, user } = response.data;
+    console.log(response.data);
 
     setSession(accessToken);
 
     dispatch({
       type: 'LOGIN',
+      payload: {
+        user: {
+          ...user,
+          accessToken,
+        },
+      },
+    });
+  }, []);
+
+  // REGISTER WITH GOOGLE
+  const googleRegister = useCallback(async (googleAccessToken) => {
+    const data = {googleAccessToken};
+    const response = await axios.post(endpoints.auth.register, data);
+    const { accessToken, user } = response.data;
+
+    sessionStorage.setItem(STORAGE_KEY, accessToken);
+
+    dispatch({
+      type: 'REGISTER',
       payload: {
         user: {
           ...user,
@@ -170,10 +208,12 @@ export function AuthProvider({ children }) {
       unauthenticated: status === 'unauthenticated',
       //
       login,
+      googleLogin,
+      googleRegister,
       register,
       logout,
     }),
-    [login, logout, register, state.user, status]
+    [login, googleLogin, googleRegister, logout, register, state.user, status]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;

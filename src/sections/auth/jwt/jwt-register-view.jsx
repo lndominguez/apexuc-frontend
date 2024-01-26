@@ -14,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
+import { useGoogleLogin } from '@react-oauth/google';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -22,11 +23,13 @@ import { PATH_AFTER_LOGIN } from 'src/config-global';
 
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { Button } from '@mui/material';
+
 
 // ----------------------------------------------------------------------
 
 export default function JwtRegisterView() {
-  const { register } = useAuthContext();
+  const { register, googleRegister } = useAuthContext();
 
   const router = useRouter();
 
@@ -37,6 +40,33 @@ export default function JwtRegisterView() {
   const returnTo = searchParams.get('returnTo');
 
   const password = useBoolean();
+
+  const loginWithGoogle = useGoogleLogin({
+
+    onSuccess: async response => {
+      try {
+        await googleRegister?.(response.access_token);
+        router.push(returnTo || PATH_AFTER_LOGIN);
+      } catch (error) {
+        console.error(error);
+        reset();
+        setErrorMsg(typeof error === 'string' ? error : error.message);
+      }
+    },
+  });
+  const loginWithFacebook = useGoogleLogin({
+
+    onSuccess: async response => {
+      try {
+        await googleRegister?.(response.access_token);
+        router.push(returnTo || PATH_AFTER_LOGIN);
+      } catch (error) {
+        console.error(error);
+        reset();
+        setErrorMsg(typeof error === 'string' ? error : error.message);
+      }
+    },
+  });
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('First name required'),
@@ -77,7 +107,7 @@ export default function JwtRegisterView() {
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5, position: 'relative' }}>
-      <Typography variant="h4">Get started absolutely free</Typography>
+      <Typography variant="h4">Thanks for CHOOSING US</Typography>
 
       <Stack direction="row" spacing={0.5}>
         <Typography variant="body2"> Already have an account? </Typography>
@@ -145,6 +175,18 @@ export default function JwtRegisterView() {
       >
         Create account
       </LoadingButton>
+
+      <Button variant='outlined' onClick={loginWithGoogle} startIcon={
+        <Iconify icon='logos:google-icon' />
+      }>
+        Create with google
+      </Button>
+      
+      {/* <Button variant='outlined' onClick={loginWithFacebook} startIcon={
+        <Iconify icon='logos:facebook' />
+      }>
+        Create with facebook
+      </Button> */}
     </Stack>
   );
 

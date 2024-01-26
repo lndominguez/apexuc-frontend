@@ -66,19 +66,19 @@ export default function Header() {
                 right: -16,
               },
             }}
-            badgeContent={
-              <Link
-                href={paths.changelog}
-                target="_blank"
-                rel="noopener"
-                underline="none"
-                sx={{ ml: 1 }}
-              >
-                <Label color="info" sx={{ textTransform: 'unset', height: 22, px: 0.5 }}>
-                  v5.7.0
-                </Label>
-              </Link>
-            }
+            // badgeContent={
+            //   <Link
+            //     href={paths.changelog}
+            //     target="_blank"
+            //     rel="noopener"
+            //     underline="none"
+            //     sx={{ ml: 1 }}
+            //   >
+            //     <Label color="info" sx={{ textTransform: 'unset', height: 22, px: 0.5 }}>
+            //       v5.7.0
+            //     </Label>
+            //   </Link>
+            // }
           >
             <Logo />
           </Badge>
@@ -88,11 +88,11 @@ export default function Header() {
           {mdUp && <NavDesktop data={navConfig} />}
 
           <Stack alignItems="center" direction={{ xs: 'row', md: 'row-reverse' }}>
-            <Button variant="contained" target="_blank" rel="noopener" href={paths.minimalUI}>
+            {/* <Button variant="contained" target="_blank" rel="noopener" href={paths.minimalUI}>
               Purchase Now
-            </Button>
+            </Button> */}
 
-            {mdUp && <LoginButton />}
+            {mdUp && <LoginButton/>}
 
             <SettingsButton
               sx={{

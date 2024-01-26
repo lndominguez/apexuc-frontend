@@ -14,10 +14,10 @@ import { componentsRoutes } from './components';
 export default function Router() {
   return useRoutes([
     // SET INDEX PAGE WITH SKIP HOME PAGE
-    {
-      path: '/',
-      element: <Navigate to='/coming-soon' replace />,
-    },
+    // {
+    //   path: '/',
+    //   element: <Navigate to='/coming-soon' replace />,
+    // },
 
     // ----------------------------------------------------------------------
 
