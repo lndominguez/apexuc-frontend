@@ -1,22 +1,23 @@
+import { defineConfig } from 'vite'
 import path from 'path';
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import checker from 'vite-plugin-checker';
 
-// ----------------------------------------------------------------------
-
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    checker({
-      eslint: {
-        lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"',
-      },
-      overlay: {
-        initialIsOpen: false,
-      },
-    }),
+  plugins: [react(),
+    // checker({
+    //   eslint: {
+    //     lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"',
+    //   },
+    //   overlay: {
+    //     initialIsOpen: false,
+    //   },
+    // }),
   ],
+  build: {
+    sourcemap: false,
+  },
   resolve: {
     alias: [
       {
@@ -30,9 +31,12 @@ export default defineConfig({
     ],
   },
   server: {
+    fs: {
+      strict: false,
+    },
     proxy: {
       "/api": {
-        target: "https://127.0.0.1:4007",
+        target: "http://127.0.0.1:4007",
         changeOrigin: true,
         secure: false, rewrite: (path) => path.replace(/^\/api/, ""),
       },
@@ -41,5 +45,5 @@ export default defineConfig({
   },
   preview: {
     port: 3030,
-  },
-});
+  }
+})

@@ -7,18 +7,17 @@ import { _mock } from 'src/_mock';
 // const { user } = useMockedUser();
 
 // TO:
-// import { useAuthContext } from 'src/auth/hooks';
-// const { user } = useAuthContext();
+import { useAuthContext } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
 export function useMockedUser() {
-  const user = {
-    id: '8864c717-587d-472a-929a-8e5f298024da-0',
-    displayName: 'Jaydon Frankie',
-    email: 'demo@minimals.cc',
-    password: 'demo1234',
-    photoURL: _mock.image.avatar(24),
+  const { user } = useAuthContext();
+  const userData = {
+    id: user?.id,
+    displayName: `${user?.firstName} ${user?.lastName}`,
+    email: user?.email,
+    photoURL: user?.profilePicture ?? _mock.image.avatar(24),
     phoneNumber: '+40 777666555',
     country: 'United States',
     address: '90210 Broadway Blvd',
@@ -30,5 +29,5 @@ export function useMockedUser() {
     isPublic: true,
   };
 
-  return { user };
+  return { user: userData };
 }

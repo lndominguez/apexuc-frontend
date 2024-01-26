@@ -61,8 +61,7 @@ export const getStorage = (key) => {
 
   try {
     const result = window.localStorage.getItem(key);
-
-    if (result) {
+    if (result != null) {
       value = JSON.parse(result);
     }
   } catch (error) {

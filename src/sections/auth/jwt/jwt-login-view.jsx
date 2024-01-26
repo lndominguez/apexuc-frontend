@@ -14,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
+import { useGoogleLogin } from '@react-oauth/google';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
@@ -22,11 +23,12 @@ import { PATH_AFTER_LOGIN } from 'src/config-global';
 
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { Button } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 export default function JwtLoginView() {
-  const { login } = useAuthContext();
+  const { login, googleLogin } = useAuthContext();
 
   const router = useRouter();
 
@@ -38,14 +40,40 @@ export default function JwtLoginView() {
 
   const password = useBoolean();
 
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async response => {
+      try {
+        await googleLogin?.(response.access_token);
+        router.push(returnTo || PATH_AFTER_LOGIN);
+      } catch (error) {
+        console.error(error);
+        reset();
+        setErrorMsg(typeof error === 'string' ? error : error.message);
+      }
+    },
+  },);
+  const loginWithFacebook = useGoogleLogin({
+
+    onSuccess: async response => {
+      try {
+        await googleLogin?.(response.access_token);
+        router.push(returnTo || PATH_AFTER_LOGIN);
+      } catch (error) {
+        console.error(error);
+        reset();
+        setErrorMsg(typeof error === 'string' ? error : error.message);
+      }
+    },
+  });
+
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
     password: Yup.string().required('Password is required'),
   });
 
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: 'demo1234',
+    email: '',
+    password: '',
   };
 
   const methods = useForm({
@@ -73,7 +101,7 @@ export default function JwtLoginView() {
 
   const renderHead = (
     <Stack spacing={2} sx={{ mb: 5 }}>
-      <Typography variant="h4">Sign in to Minimal</Typography>
+      <Typography variant="h4">Sign in to APEXUCODE</Typography>
 
       <Stack direction="row" spacing={0.5}>
         <Typography variant="body2">New user?</Typography>
@@ -88,7 +116,6 @@ export default function JwtLoginView() {
   const renderForm = (
     <Stack spacing={2.5}>
       <RHFTextField name="email" label="Email address" />
-
       <RHFTextField
         name="password"
         label="Password"
@@ -118,16 +145,25 @@ export default function JwtLoginView() {
       >
         Login
       </LoadingButton>
+
+      <Button variant='outlined' onClick={loginWithGoogle} startIcon={
+        <Iconify icon='logos:google-icon' />
+      }>
+        Login with google
+      </Button>
+      
+      {/* <Button variant='outlined' onClick={loginWithFacebook} startIcon={
+        <Iconify icon='logos:facebook' />
+      }>
+        Login with facebook
+      </Button> */}
+
     </Stack>
   );
 
   return (
     <>
       {renderHead}
-
-      <Alert severity="info" sx={{ mb: 3 }}>
-        Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-      </Alert>
 
       {!!errorMsg && (
         <Alert severity="error" sx={{ mb: 3 }}>
