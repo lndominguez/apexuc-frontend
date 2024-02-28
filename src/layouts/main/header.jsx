@@ -94,12 +94,12 @@ export default function Header() {
 
             {mdUp && <LoginButton/>}
 
-            <SettingsButton
+            {/* <SettingsButton
               sx={{
                 ml: { xs: 1, md: 0 },
                 mr: { md: 2 },
               }}
-            />
+            /> */}
 
             {!mdUp && <NavMobile data={navConfig} />}
           </Stack>

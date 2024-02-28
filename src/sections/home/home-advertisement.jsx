@@ -33,7 +33,7 @@ export default function HomeAdvertisement() {
         sx={{ color: 'common.white', mb: 5, typography: 'h2' }}
       >
         Get started with
-        <br /> Minimal kit today
+        <br /> APEXUCODE kit today
       </Box>
 
       <Stack
@@ -43,38 +43,22 @@ export default function HomeAdvertisement() {
       >
         <m.div variants={varFade().inRight}>
           <Button
-            color="inherit"
+            color="primary"
             size="large"
             variant="contained"
             target="_blank"
             rel="noopener"
-            href={paths.minimalUI}
+            // href={paths.minimalUI}
             sx={{
               color: 'grey.800',
               bgcolor: 'common.white',
             }}
           >
-            Purchase Now
+            Contactenos
           </Button>
         </m.div>
 
-        <m.div variants={varFade().inRight}>
-          <Button
-            color="inherit"
-            size="large"
-            variant="outlined"
-            target="_blank"
-            rel="noopener"
-            href={paths.freeUI}
-            endIcon={<Iconify icon="eva:external-link-fill" width={16} sx={{ mr: 0.5 }} />}
-            sx={{
-              color: 'common.white',
-              '&:hover': { borderColor: 'currentColor' },
-            }}
-          >
-            Get Free Version
-          </Button>
-        </m.div>
+        
       </Stack>
     </Box>
   );

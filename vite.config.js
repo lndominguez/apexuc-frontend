@@ -15,9 +15,6 @@ export default defineConfig({
     //   },
     // }),
   ],
-  build: {
-    sourcemap: false,
-  },
   resolve: {
     alias: [
       {
@@ -36,7 +33,7 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:4007",
+        target: "http://api.apexucode.com",
         changeOrigin: true,
         secure: false, rewrite: (path) => path.replace(/^\/api/, ""),
       },

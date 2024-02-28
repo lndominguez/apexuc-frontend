@@ -27,7 +27,7 @@ import { varFade, MotionContainer } from 'src/components/animate';
 const StyledRoot = styled('div')(({ theme }) => ({
   ...bgGradient({
     color: alpha(theme.palette.background.default, theme.palette.mode === 'light' ? 0.9 : 0.94),
-    imgUrl: '/assets/background/overlay_3.jpg',
+    // imgUrl: '/assets/background/overlay_3.jpg',
   }),
   width: '100%',
   height: '100vh',
@@ -76,7 +76,7 @@ const StyledEllipseTop = styled('div')(({ theme }) => ({
   position: 'absolute',
   filter: 'blur(100px)',
   WebkitFilter: 'blur(100px)',
-  backgroundColor: alpha(theme.palette.primary.darker, 0.12),
+  backgroundColor: alpha(theme.palette.primary.dark, 0.12),
 }));
 
 const StyledEllipseBottom = styled('div')(({ theme }) => ({
@@ -88,14 +88,17 @@ const StyledEllipseBottom = styled('div')(({ theme }) => ({
   position: 'absolute',
   filter: 'blur(100px)',
   WebkitFilter: 'blur(100px)',
-  backgroundColor: alpha(theme.palette.primary.darker, 0.12),
+  backgroundColor: alpha(theme.palette.primary.dark, 0.12),
 }));
 
 const StyledPolygon = styled('div')(({ opacity = 1, anchor = 'left', theme }) => ({
-  ...bgBlur({
-    opacity,
-    color: theme.palette.background.default,
-  }),
+  // ...bgBlur({
+  //   opacity,
+  //   color: '#EFB00A',
+  // }),
+  background:
+  'linear-gradient(120deg, rgba(235,149,22,0.3) 30%, rgba(234,140,25,0.5) 50%)',
+
   zIndex: 9,
   bottom: 0,
   height: 80,
@@ -163,7 +166,7 @@ export default function HomeHero() {
 
   const renderDescription = (
     <Stack
-      alignItems="center"
+      alignItems="left"
       justifyContent="center"
       sx={{
         height: 1,
@@ -177,121 +180,40 @@ export default function HomeHero() {
     >
       <m.div variants={varFade().in}>
         <Typography
-          variant="h2"
+          variant="h3"
           sx={{
-            textAlign: 'center',
+            textAlign: 'left',
           }}
         >
-          Start a <br />
-          New Project with
+          Inicia tus proyectos
+          <br />
+          con nosotros.
         </Typography>
       </m.div>
 
       <m.div variants={varFade().in}>
-        <StyledTextGradient
-          animate={{ backgroundPosition: '200% center' }}
-          transition={{
-            repeatType: 'reverse',
-            ease: 'linear',
-            duration: 20,
-            repeat: Infinity,
-          }}
-        >
-          Minimal
-        </StyledTextGradient>
-      </m.div>
-
-      <m.div variants={varFade().in}>
-        <Typography variant="body2" sx={{ textAlign: 'center' }}>
+        <Typography variant="body2" sx={{ textAlign: 'left' }}>
           The starting point for your next project is based on MUI.Easy customization Helps you
           build apps faster and better.
         </Typography>
       </m.div>
 
-      <m.div variants={varFade().in}>
-        <Stack
-          spacing={0.75}
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          sx={{ my: 3 }}
-        >
-          <Rating readOnly value={4.95} precision={0.1} max={5} />
-          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-            <Box component="strong" sx={{ mr: 0.5, color: 'text.primary' }}>
-              4.96/5
-            </Box>
-            (99+ reviews)
-          </Typography>
-        </Stack>
-      </m.div>
-
-      <m.div variants={varFade().in}>
-        <Stack spacing={1.5} direction={{ xs: 'column-reverse', sm: 'row' }} sx={{ mb: 5 }}>
-          <Stack alignItems="center" spacing={2}>
-            <Button
-              component={RouterLink}
-              href={paths.dashboard.root}
-              color="inherit"
-              size="large"
-              variant="contained"
-              startIcon={<Iconify icon="eva:flash-fill" width={24} />}
-            >
-              Live Preview
-            </Button>
-
-            <Link
-              color="inherit"
-              variant="caption"
-              target="_blank"
-              rel="noopener"
-              href={paths.freeUI}
-              sx={{
-                textDecoration: 'underline',
-                display: 'inline-flex',
-                alignItems: 'center',
-              }}
-            >
-              <Iconify icon="eva:external-link-fill" width={16} sx={{ mr: 0.5 }} />
-              Get Free Version
-            </Link>
-          </Stack>
-
+      <m.div variants={varFade().inLeft}>
+        <Stack spacing={1.5} direction={{ xs: 'column-reverse', sm: 'row' }} sx={{ mb: 2, mt: 2 }}>
           <Button
             color="inherit"
             size="large"
             variant="outlined"
-            startIcon={<Iconify icon="eva:external-link-fill" width={24} />}
+            // startIcon={<Iconify icon="eva:external-link-fill" width={24} />}
             target="_blank"
             rel="noopener"
-            href={paths.figma}
+            // href={paths.figma}
             sx={{ borderColor: 'text.primary' }}
           >
-            Design Preview
+            Contáctenos
           </Button>
         </Stack>
       </m.div>
-
-      <Stack spacing={3} sx={{ textAlign: 'center' }}>
-        <m.div variants={varFade().in}>
-          <Typography variant="overline" sx={{ opacity: 0.48 }}>
-            Available For
-          </Typography>
-        </m.div>
-
-        <Stack spacing={2} direction="row" justifyContent="center">
-          {['js', 'ts', 'figma', 'nextjs', 'vite'].map((icon) => (
-            <m.div key={icon} variants={varFade().in}>
-              <Box
-                component="img"
-                alt={icon}
-                src={`/assets/icons/platforms/ic_${icon}.svg`}
-                sx={{ width: 24, height: 24 }}
-              />
-            </m.div>
-          ))}
-        </Stack>
-      </Stack>
     </Stack>
   );
 
@@ -378,10 +300,27 @@ export default function HomeHero() {
 
   const renderPolygons = (
     <>
-      <StyledPolygon />
+      <StyledPolygon
+        style={{
+          background:
+            'linear-gradient(120deg, rgba(234,140,25,1) 4%, rgba(241,196,2,1) 50%, rgba(235,149,22,1) 100%, rgba(235,149,22,0.5172269591430323) 75%)',
+        }}
+      />
       <StyledPolygon anchor="right" opacity={0.48} />
       <StyledPolygon anchor="right" opacity={0.48} sx={{ height: 48, zIndex: 10 }} />
       <StyledPolygon anchor="right" sx={{ zIndex: 11, height: 24 }} />
+    </>
+  );
+  const renderPolygons2 = (
+    <>
+      <StyledPolygon sx={{
+         background:
+         'linear-gradient(120deg, rgba(234,140,25,1) 4%, rgba(241,196,2,1) 50%, rgba(235,149,22,1) 100%, rgba(235,149,22,0.5172269591430323) 75%)',
+         height: 30, zIndex: 0 
+      }} />
+      <StyledPolygon anchor="right" opacity={0.2} sx={{ height: 45, zIndex: 10 }} />
+      <StyledPolygon anchor="right" opacity={0.2} sx={{ height: 25, zIndex: 10 }} />
+      <StyledPolygon anchor="right" sx={{ zIndex: 11, height: 15 }} />
     </>
   );
 
@@ -407,6 +346,7 @@ export default function HomeHero() {
             <Grid container columnSpacing={{ md: 10 }} sx={{ height: 1 }}>
               <Grid xs={12} md={6}>
                 {renderDescription}
+                {renderPolygons2}
               </Grid>
 
               {mdUp && <Grid md={6}>{renderSlides}</Grid>}

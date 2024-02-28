@@ -103,26 +103,23 @@ export function AuthProvider({ children }) {
       password,
     };
 
-    await axios.post(endpoints.auth.login, data,{
-      headers:{"Content-Type":"application/json"}
-    }).then(response =>{
-      const { accessToken, user } = response.data;
-      setSession(accessToken);
-      dispatch({
-        type: 'LOGIN',
-        payload: {
-          user: {
-            ...user,
-            accessToken,
-          },
+    const response = await axios.post(endpoints.auth.login, data);
+    const { accessToken, user } = response.data;
+    setSession(accessToken);
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        user: {
+          ...user,
+          accessToken,
         },
-      });
-    }).catch(err => console.error(err));
+      },
+    })
   }, []);
 
   // LOGIN WITH GOOGLE
   const googleLogin = useCallback(async (googleAccessToken) => {
-    const data = {googleAccessToken};
+    const data = { googleAccessToken };
     const response = await axios.post(endpoints.auth.login, data);
     const { accessToken, user } = response.data;
     console.log(response.data);
@@ -142,7 +139,7 @@ export function AuthProvider({ children }) {
 
   // REGISTER WITH GOOGLE
   const googleRegister = useCallback(async (googleAccessToken) => {
-    const data = {googleAccessToken};
+    const data = { googleAccessToken };
     const response = await axios.post(endpoints.auth.register, data);
     const { accessToken, user } = response.data;
 

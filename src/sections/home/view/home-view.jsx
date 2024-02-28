@@ -15,6 +15,7 @@ import HomeColorPresets from '../home-color-presets';
 import HomeAdvertisement from '../home-advertisement';
 import HomeCleanInterfaces from '../home-clean-interfaces';
 import HomeHugePackElements from '../home-hugepack-elements';
+import HomeOurJobs from '../home-our-jobs';
 
 // ----------------------------------------------------------------------
 
@@ -58,23 +59,24 @@ export default function HomeView() {
       >
         <HomeMinimal />
 
-        <HomeHugePackElements />
+        {/* <HomeHugePackElements /> */}
 
-        <Box sx={{ position: 'relative' }}>
+        {/* <Box sx={{ position: 'relative' }}>
           <StyledPolygon />
           <HomeForDesigner />
           <StyledPolygon anchor="bottom" />
-        </Box>
+        </Box> */}
 
-        <HomeDarkMode />
+        {/* <HomeDarkMode /> */}
+        <HomeOurJobs/>
 
-        <HomeColorPresets />
+        {/* <HomeColorPresets /> */}
 
         <HomeCleanInterfaces />
 
         <HomePricing />
 
-        <HomeLookingFor />
+        {/* <HomeLookingFor /> */}
 
         <HomeAdvertisement />
       </Box>
