@@ -14,7 +14,7 @@ root.render(
   <HelmetProvider>
     <BrowserRouter>
       <Suspense>
-      <GoogleOAuthProvider clientId="75908156014-s6veqs45q2s6p7t6jbh6nisjdomfro4p.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId="578454885769-3ufucnbiqsick33hgo0hr6fjreo5h3ki.apps.googleusercontent.com">
         <App />
       </GoogleOAuthProvider>
       </Suspense>

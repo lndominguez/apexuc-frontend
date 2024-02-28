@@ -18,11 +18,15 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 
 import UserQuickEditForm from './user-quick-edit-form';
+import { IMAGE_API } from 'src/config-global';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
-export default function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
-  const { name, avatarUrl, company, role, status, email, phoneNumber } = row;
+export default function UserTableRow({ row, mutate, selected, onEditRow, onSelectRow, onDeleteRow }) {
+  // const [rowData, setRowData] = useState(row);
+  const { firstName, lastName, avatarUrl, country, state, role, status, email, phoneNumber } =
+    row;
 
   const confirm = useBoolean();
 
@@ -38,24 +42,37 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
         </TableCell>
 
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
+          <Avatar alt={firstName} src={IMAGE_API + '/' + avatarUrl} sx={{ mr: 2 }} />
 
           <ListItemText
-            primary={name}
+            primary={`${firstName} ${lastName}`}
             secondary={email}
-            primaryTypographyProps={{ typography: 'body2' }}
+            primaryTypographyProps={{ typography: 'caption' }}
             secondaryTypographyProps={{
               component: 'span',
               color: 'text.disabled',
             }}
           />
         </TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>
+          <Label
+            variant="outlined"
+            color={
+              (role === 'administrator' && 'success') ||
+              (role === 'user' && 'warning') ||
+              (role === 'guest' && 'error') ||
+              'default'
+            }
+          >
+            {role}
+          </Label>
+        </TableCell>
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{company}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{country}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{state}</TableCell>
 
         <TableCell>
           <Label
@@ -83,8 +100,16 @@ export default function UserTableRow({ row, selected, onEditRow, onSelectRow, on
           </IconButton>
         </TableCell>
       </TableRow>
-
-      <UserQuickEditForm currentUser={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
+      <UserQuickEditForm
+        currentUser={row}
+        open={quickEdit.value}
+        // onClose={quickEdit.onFalse}
+        // if (rowData._id === e._id) setRowData(e);
+        onClose={(e) => {
+          quickEdit.setValue(false);
+          mutate();
+        }}
+      />
 
       <CustomPopover
         open={popover.open}
@@ -134,5 +159,6 @@ UserTableRow.propTypes = {
   onEditRow: PropTypes.func,
   onSelectRow: PropTypes.func,
   row: PropTypes.object,
+  mutate: PropTypes.any,
   selected: PropTypes.bool,
 };

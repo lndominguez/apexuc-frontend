@@ -19,7 +19,7 @@ import { RouterLink } from 'src/routes/components';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { useGetUsers } from 'src/api/user';
+import { deleteUser, deleteUsers, useGetUsers } from 'src/api/user';
 import { _roles, _userList, USER_STATUS_OPTIONS } from 'src/_mock';
 
 import Label from 'src/components/label';
@@ -49,11 +49,12 @@ import UserTableFiltersResult from '../user-table-filters-result';
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
-  { id: 'phoneNumber', label: 'Phone Number', width: 180 },
-  { id: 'company', label: 'Company', width: 220 },
-  { id: 'role', label: 'Role', width: 180 },
-  { id: 'status', label: 'Status', width: 100 },
+  { id: 'firstName', label: 'Name', width: 300 },
+  { id: 'role', label: 'Role', width: 100 },
+  { id: 'phoneNumber', label: 'Phone Number', width: 150 },
+  { id: 'country', label: 'Country', width: 150 },
+  { id: 'state', label: 'State', width: 180 },
+  { id: 'status', label: 'Status', width: 80 },
   { id: '', width: 88 },
 ];
 
@@ -75,10 +76,9 @@ export default function UserListView() {
   const router = useRouter();
 
   const confirm = useBoolean();
-  const { users } = useGetUsers();
+  const { users, usersMutate } = useGetUsers();
 
-
-  const [tableData, setTableData] = useState(_userList);
+  const [tableData, setTableData] = useState(users);
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -107,6 +107,7 @@ export default function UserListView() {
 
   const handleFilters = useCallback(
     (name, value) => {
+      console.log(name, value);
       table.onResetPage();
       setFilters((prevState) => ({
         ...prevState,
@@ -122,28 +123,43 @@ export default function UserListView() {
 
   const handleDeleteRow = useCallback(
     (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-
-      enqueueSnackbar('Delete success!');
-
-      setTableData(deleteRow);
-
-      table.onUpdatePageDeleteRow(dataInPage.length);
+      const deleteRow = tableData.filter((row) => row._id !== id);
+      deleteUser?.(id)
+        .then((res) => {
+          if (res.status === 200) {
+            enqueueSnackbar('Delete success!');
+            setTableData(deleteRow);
+            table.onUpdatePageDeleteRow(dataInPage.length);
+          } else {
+            enqueueSnackbar('Delete error!', (variant = 'error'));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     [dataInPage.length, enqueueSnackbar, table, tableData]
   );
 
   const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-
-    enqueueSnackbar('Delete success!');
-
-    setTableData(deleteRows);
-
-    table.onUpdatePageDeleteRows({
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
+    const deleteRows = tableData.filter((row) => !table.selected.includes(row._id));
+    
+    deleteUsers?.(table.selected)
+      .then((res) => {
+        if (res.status === 200) {
+          enqueueSnackbar('Delete success!');
+          setTableData(deleteRows);
+          table.onUpdatePageDeleteRows({
+            totalRowsInPage: dataInPage.length,
+            totalRowsFiltered: dataFiltered.length,
+          });
+        } else {
+          enqueueSnackbar('Delete error!', (variant = 'error'));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [dataFiltered.length, dataInPage.length, enqueueSnackbar, table, tableData]);
 
   const handleEditRow = useCallback(
@@ -159,7 +175,6 @@ export default function UserListView() {
     },
     [handleFilters]
   );
-
 
   return (
     <>
@@ -249,7 +264,7 @@ export default function UserListView() {
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,
-                  dataFiltered.map((row) => row.id)
+                  dataFiltered.map((row) => row._id)
                 )
               }
               action={
@@ -273,7 +288,7 @@ export default function UserListView() {
                   onSelectAllRows={(checked) =>
                     table.onSelectAllRows(
                       checked,
-                      dataFiltered.map((row) => row.id)
+                      dataFiltered.map((row) => row._id)
                     )
                   }
                 />
@@ -286,12 +301,13 @@ export default function UserListView() {
                     )
                     .map((row) => (
                       <UserTableRow
-                        key={row.id}
+                        key={row._id}
                         row={row}
-                        selected={table.selected.includes(row.id)}
-                        onSelectRow={() => table.onSelectRow(row.id)}
-                        onDeleteRow={() => handleDeleteRow(row.id)}
-                        onEditRow={() => handleEditRow(row.id)}
+                        mutate={usersMutate}
+                        selected={table.selected.includes(row._id)}
+                        onSelectRow={() => table.onSelectRow(row._id)}
+                        onDeleteRow={() => handleDeleteRow(row._id)}
+                        onEditRow={() => handleEditRow(row._id)}
                       />
                     ))}
 
@@ -362,7 +378,10 @@ function applyFilter({ inputData, comparator, filters }) {
 
   if (name) {
     inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (user) =>
+        user.firstName.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+        user.lastName.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+        user.email.toLowerCase().indexOf(name.toLowerCase()) !== -1
     );
   }
 

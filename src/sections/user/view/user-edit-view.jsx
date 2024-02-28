@@ -4,19 +4,25 @@ import Container from '@mui/material/Container';
 
 import { paths } from 'src/routes/paths';
 
-import { _userList } from 'src/_mock';
-
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
 import UserNewEditForm from '../user-new-edit-form';
+import { useGetUserById } from 'src/api/user';
+import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
 export default function UserEditView({ id }) {
   const settings = useSettingsContext();
+  const {user} = useGetUserById(id);
+  const [currentUser, setCurrentUser] = useState(user);
 
-  const currentUser = _userList.find((user) => user.id === id);
+  useEffect(() => {
+    if (!!user) {
+      setCurrentUser(user);
+    }
+  }, [user]);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -31,7 +37,7 @@ export default function UserEditView({ id }) {
             name: 'User',
             href: paths.dashboard.user.root,
           },
-          { name: currentUser?.name },
+          { name: currentUser?.firstName || '' },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

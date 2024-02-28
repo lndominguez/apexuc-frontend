@@ -28,10 +28,11 @@ export default function UserTableToolbar({
   const handleFilterName = useCallback(
     (event) => {
       onFilters('name', event.target.value);
+    
     },
     [onFilters]
   );
-
+ 
   const handleFilterRole = useCallback(
     (event) => {
       onFilters(
@@ -99,7 +100,6 @@ export default function UserTableToolbar({
               ),
             }}
           />
-
           <IconButton onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>

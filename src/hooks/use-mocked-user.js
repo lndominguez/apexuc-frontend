@@ -8,6 +8,7 @@ import { _mock } from 'src/_mock';
 
 // TO:
 import { useAuthContext } from 'src/auth/hooks';
+import { IMAGE_API } from 'src/config-global';
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +18,7 @@ export function useMockedUser() {
     id: user?.id,
     displayName: `${user?.firstName} ${user?.lastName}`,
     email: user?.email,
-    photoURL: user?.profilePicture ?? _mock.image.avatar(24),
+    photoURL: `${IMAGE_API}/${user?.avatarUrl}` ?? _mock.image.avatar(24),
     phoneNumber: '+40 777666555',
     country: 'United States',
     address: '90210 Broadway Blvd',

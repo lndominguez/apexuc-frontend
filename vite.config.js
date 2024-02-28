@@ -28,16 +28,16 @@ export default defineConfig({
     ],
   },
   server: {
-    fs: {
-      strict: false,
-    },
-    proxy: {
-      "/api": {
-        target: "http://api.apexucode.com",
-        changeOrigin: true,
-        secure: false, rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
+  //   fs: {
+  //     strict: false,
+  //   },
+  //   proxy: {
+  //     "/api": {
+  //       target: "http://api.apexucode.com",
+  //       changeOrigin: true,
+  //       secure: false, rewrite: (path) => path.replace(/^\/api/, ""),
+  //     },
+  //   },
     port: 3030,
   },
   preview: {

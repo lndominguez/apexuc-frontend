@@ -14,24 +14,28 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
-import { countries } from 'src/assets/data';
+import { countries, roles } from 'src/assets/data';
 import { USER_STATUS_OPTIONS } from 'src/_mock';
 
 import { useSnackbar } from 'src/components/snackbar';
 import FormProvider, { RHFSelect, RHFTextField, RHFAutocomplete } from 'src/components/hook-form';
+import { updateUser } from 'src/api/user';
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
+import { updateCurrentUser } from 'firebase/auth';
 
 // ----------------------------------------------------------------------
 
 export default function UserQuickEditForm({ currentUser, open, onClose }) {
   const { enqueueSnackbar } = useSnackbar();
-
+  const router = useRouter();
   const NewUserSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
+    firstName: Yup.string().required('firstName is required'),
+    lastName: Yup.string().required('LastName is required'),
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    address: Yup.string().required('Address is required'),
+    phoneNumber: Yup.string(),
+    address: Yup.string(),
     country: Yup.string().required('Country is required'),
-    company: Yup.string().required('Company is required'),
     state: Yup.string().required('State is required'),
     city: Yup.string().required('City is required'),
     role: Yup.string().required('Role is required'),
@@ -39,7 +43,9 @@ export default function UserQuickEditForm({ currentUser, open, onClose }) {
 
   const defaultValues = useMemo(
     () => ({
-      name: currentUser?.name || '',
+      _id: currentUser?._id || null,
+      firstName: currentUser?.firstName || '',
+      lastName: currentUser?.lastName || '',
       email: currentUser?.email || '',
       phoneNumber: currentUser?.phoneNumber || '',
       address: currentUser?.address || '',
@@ -48,7 +54,6 @@ export default function UserQuickEditForm({ currentUser, open, onClose }) {
       city: currentUser?.city || '',
       zipCode: currentUser?.zipCode || '',
       status: currentUser?.status,
-      company: currentUser?.company || '',
       role: currentUser?.role || '',
     }),
     [currentUser]
@@ -61,17 +66,25 @@ export default function UserQuickEditForm({ currentUser, open, onClose }) {
 
   const {
     reset,
-    handleSubmit,
+        handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      onClose();
-      enqueueSnackbar('Update success!');
-      console.info('DATA', data);
+     await updateUser(data)
+        .then((res) => {
+          if (res.status === 200) {
+            reset(res.data);
+            onClose();
+            enqueueSnackbar('Update success!');
+            // reset();
+            // onClose(res.data);  
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -114,7 +127,8 @@ export default function UserQuickEditForm({ currentUser, open, onClose }) {
 
             <Box sx={{ display: { xs: 'none', sm: 'block' } }} />
 
-            <RHFTextField name="name" label="Full Name" />
+            <RHFTextField name="firstName" label="First Name" />
+            <RHFTextField name="lastName" label="Last Name" />
             <RHFTextField name="email" label="Email Address" />
             <RHFTextField name="phoneNumber" label="Phone Number" />
 
@@ -132,8 +146,14 @@ export default function UserQuickEditForm({ currentUser, open, onClose }) {
             <RHFTextField name="city" label="City" />
             <RHFTextField name="address" label="Address" />
             <RHFTextField name="zipCode" label="Zip/Code" />
-            <RHFTextField name="company" label="Company" />
-            <RHFTextField name="role" label="Role" />
+            <RHFAutocomplete
+              name="role"
+              label="Role"
+              placeholder="Choose a role"
+              fullWidth
+              options={roles}
+              getOptionLabel={(option) => option}
+            />
           </Box>
         </DialogContent>
 
