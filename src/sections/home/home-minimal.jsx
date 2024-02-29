@@ -69,39 +69,43 @@ export default function HomeMinimal() {
               'linear-gradient(120deg, rgba(234,140,25,1) 0%, rgba(241,196,2,1) 18%, rgba(235,149,22,1) 45%, rgba(235,149,22,0.5172269591430323) 75%)',
           }}
         >
-          <Stack
-            alignItems="left"
-            justifyContent="center"
+          <Container
+            component={MotionViewport}
             sx={{
-              height: 1,
-              ml: '3rem',
-              mr: '1rem',
-              // mx: 'auto',
-              px: 3,
-              maxWidth: 480,
-              color: 'white',
+              py: { xs: 10, md: 15 },
             }}
           >
-            <m.div variants={varFade().inUp}>
-              <Typography
-                variant="h3"
-                sx={{
-                  textAlign: 'left',
-                }}
-              >
-                ¿Quiénes Somos?
-              </Typography>
-            </m.div>
+            <Stack
+              alignItems="left"
+              justifyContent="center"
+              sx={{
+                height: 1,
+                px: 3,
+                maxWidth: 480,
+                color: 'white',
+              }}
+            >
+              <m.div variants={varFade({ durationIn: 1.5 }).inLeft}>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    textAlign: 'left',
+                  }}
+                >
+                  ¿Quiénes Somos?
+                </Typography>
+              </m.div>
 
-            <m.div variants={varFade().inDown}>
-              <Typography variant="body2" sx={{ textAlign: 'left', maxWidth: 350 }}>
-                The starting point for your next project is based on MUI. Easy customization Helps
-                you build apps faster and better. The starting point for your next project is based
-                on MUI. Easy customization Helps you build apps faster and better. The starting
-                point for your next project is based on MUI.
-              </Typography>
-            </m.div>
-          </Stack>
+              <m.div variants={varFade({ durationIn: 1.5 }).inRight}>
+                <Typography variant="body2" sx={{ textAlign: 'left', maxWidth: 350 }}>
+                  The starting point for your next project is based on MUI. Easy customization Helps
+                  you build apps faster and better. The starting point for your next project is
+                  based on MUI. Easy customization Helps you build apps faster and better. The
+                  starting point for your next project is based on MUI.
+                </Typography>
+              </m.div>
+            </Stack>
+          </Container>
         </div>
       </div>
 
@@ -126,7 +130,7 @@ export default function HomeMinimal() {
 
           <m.div variants={varFade().inDown}>
             <Typography variant="h3">
-              ¿Sabes cuales son <br/> nuestros servicios?
+              ¿Sabes cuales son <br /> nuestros servicios?
             </Typography>
           </m.div>
         </Stack>
@@ -174,22 +178,26 @@ export default function HomeMinimal() {
             </m.div>
           ))}
         </Box>
-        <m.div variants={varFade({durationIn:1.5}).inRight}>
-        <Stack spacing={1.5} direction={{ xs: 'column-reverse', sm: 'row' }} sx={{ mb: 2, mt: 2, display:'flex', justifyContent:'center' }}>
-          <Button
-            color="inherit"
-            size="large"
-            variant="outlined"
-            // startIcon={<Iconify icon="eva:external-link-fill" width={24} />}
-            target="_blank"
-            rel="noopener"
-            // href={paths.figma}
-            sx={{ borderColor: 'text.primary' }}
+        <m.div variants={varFade({ durationIn: 1.5 }).inRight}>
+          <Stack
+            spacing={1.5}
+            direction={{ xs: 'column-reverse', sm: 'row' }}
+            sx={{ mb: 2, mt: 2, display: 'flex', justifyContent: 'center' }}
           >
-            Solicite nuestros servicios
-          </Button>
-        </Stack>
-      </m.div>
+            <Button
+              color="inherit"
+              size="large"
+              variant="outlined"
+              // startIcon={<Iconify icon="eva:external-link-fill" width={24} />}
+              target="_blank"
+              rel="noopener"
+              // href={paths.figma}
+              sx={{ borderColor: 'text.primary' }}
+            >
+              Solicite nuestros servicios
+            </Button>
+          </Stack>
+        </m.div>
       </Container>
     </>
   );
