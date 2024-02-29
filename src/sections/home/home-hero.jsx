@@ -235,7 +235,8 @@ export default function HomeHero() {
         component={m.div}
         variants={varFade().in}
         sx={{
-          width: 344,
+          width: 300,
+          marginRight: '5%',
           position: 'relative',
         }}
       >
@@ -246,7 +247,7 @@ export default function HomeHero() {
           alt={lightMode ? 'light_1' : 'dark_1'}
           src={
             lightMode
-              ? `/assets/images/home/hero/light_1.webp`
+              ? `/assets/images/home/hero/light1.png`
               : `/assets/images/home/hero/dark_1.webp`
           }
           sx={{ position: 'absolute', mt: -5 }}
@@ -258,7 +259,7 @@ export default function HomeHero() {
           alt={lightMode ? 'light_1' : 'dark_1'}
           src={
             lightMode
-              ? `/assets/images/home/hero/light_1.webp`
+              ? `/assets/images/home/hero/light1.png`
               : `/assets/images/home/hero/dark_1.webp`
           }
           sx={{ position: 'absolute' }}
@@ -268,7 +269,7 @@ export default function HomeHero() {
       <Stack
         component={m.div}
         variants={varFade().in}
-        sx={{ width: 720, position: 'relative', ml: -5 }}
+        sx={{ width: 440, position: 'relative', ml: -5 }}
       >
         <Box
           component={m.img}
@@ -277,7 +278,7 @@ export default function HomeHero() {
           alt={lightMode ? 'light_2' : 'dark_2'}
           src={
             lightMode
-              ? `/assets/images/home/hero/light_2.webp`
+              ? `/assets/images/home/hero/light.webp`
               : `/assets/images/home/hero/dark_2.webp`
           }
           sx={{ position: 'absolute', mt: -5 }}
@@ -289,7 +290,7 @@ export default function HomeHero() {
           alt={lightMode ? 'light_2' : 'dark_2'}
           src={
             lightMode
-              ? `/assets/images/home/hero/light_2.webp`
+              ? `/assets/images/home/hero/light.webp`
               : `/assets/images/home/hero/dark_2.webp`
           }
           sx={{ position: 'absolute' }}
