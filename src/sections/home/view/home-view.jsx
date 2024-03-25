@@ -16,6 +16,7 @@ import HomeAdvertisement from '../home-advertisement';
 import HomeCleanInterfaces from '../home-clean-interfaces';
 import HomeHugePackElements from '../home-hugepack-elements';
 import HomeOurJobs from '../home-our-jobs';
+import HomeJobs from '../home-jobs';
 
 // ----------------------------------------------------------------------
 
@@ -69,6 +70,7 @@ export default function HomeView() {
 
         {/* <HomeDarkMode /> */}
         <HomeOurJobs/>
+        {/* <HomeJobs/> */}
 
         {/* <HomeColorPresets /> */}
 

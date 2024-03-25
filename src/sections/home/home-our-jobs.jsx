@@ -16,7 +16,26 @@ import { _mock } from 'src/_mock';
 import CarouselOurJobs from '../_examples/extra/carousel-view/carousel-our-jobs';
 
 // ----------------------------------------------------------------------
-
+const jobsList = [
+  {
+    id: 0,
+    title: 'Web Developer',
+    description: 'Web Developer in despega express',
+    coverUrl: '/assets/images/home/hero/slider/web_dev.jpg',
+  },
+  {
+    id: 1,
+    title: 'Mobile Developer',
+    description: 'Mobile Developer in ApexUDelivery',
+    coverUrl: '/assets/images/home/hero/slider/app_dev.png',
+  },
+  {
+    id: 2,
+    title: 'Desktop Developer',
+    description: 'Desktop Developer in SysAdmin for ApexUTravel',
+    coverUrl: '/assets/images/home/hero/slider/desktop_dev.png',
+  },
+];
 export default function HomeOurJobs() {
   const settings = useSettingsContext();
 
@@ -44,40 +63,15 @@ export default function HomeOurJobs() {
 
   const renderCarouserl = (
     <m.div variants={varFade().inUp}>
-      <CarouselOurJobs data={_carouselsExample.slice(8, 12)} />
-      <m.div variants={varFade().inUp}>
-        <Typography variant="h4" sx={{ color: 'common.white' }}>
-          Nombre del trabajo
-        </Typography>
-        <Typography variant="demo1" sx={{ color: 'common.white' }}>
-          ApexUCODE lo mejor para tu negocio, lo mejor para tu familia, lo mejor para tus sueños
-        </Typography>
-        <m.div variants={varFade({ durationIn: 1.5 }).inRight}>
-          <Stack
-            spacing={1.5}
-            direction={{ xs: 'column-reverse', sm: 'row' }}
-            sx={{ mb: 2, mt: 2, display: 'flex', justifyContent: 'center' }}
-          >
-            <Button
-              color="primary"
-              size="large"
-              variant="outlined"
-              // startIcon={<Iconify icon="eva:external-link-fill" width={24} />}
-              target="_blank"
-              rel="noopener"
-              // href={paths.figma}
-              sx={{ borderColor: 'text.white' }}
-            >
-              Solicite nuestros servicios
-            </Button>
-          </Stack>
-        </m.div>
-      </m.div>
+      <CarouselOurJobs data={jobsList} />
     </m.div>
   );
 
   return (
     <Box
+      gap={3}
+      display="grid"
+     
       sx={{
         textAlign: 'center',
         bgcolor: '#0C3F5B',
